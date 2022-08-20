@@ -1,5 +1,7 @@
 package jpp.gametheory.generic;
 
+import jpp.gametheory.rockPaperScissors.RPSChoice;
+
 import java.util.List;
 
 public class Player<C extends IChoice> implements IPlayer<C> {
@@ -29,7 +31,7 @@ public class Player<C extends IChoice> implements IPlayer<C> {
     public C getChoice(List<IGameRound<C>> previousRounds) {
         if(previousRounds== null)
             throw new NullPointerException("There are no previous rounds!");
-        throw new UnsupportedOperationException();
+        return (C) strategy.getChoice(this ,previousRounds);
     }
 
     @Override
