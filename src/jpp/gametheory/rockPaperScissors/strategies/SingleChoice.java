@@ -8,23 +8,26 @@ import jpp.gametheory.rockPaperScissors.RPSChoice;
 import java.util.List;
 
 public class SingleChoice implements IStrategy<RPSChoice> {
+    private final RPSChoice choice;
 
     public SingleChoice(RPSChoice choice) {
-        throw new UnsupportedOperationException();
+        if (choice == null)
+            throw new NullPointerException("Choice is null!");
+        this.choice = choice;
     }
 
     @Override
     public String name() {
-        throw new UnsupportedOperationException();
+        return "Always " + choice.name();
     }
 
     @Override
     public RPSChoice getChoice(IPlayer<RPSChoice> player, List<IGameRound<RPSChoice>> previousRounds) {
-        throw new UnsupportedOperationException();
+    return this.choice;
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        return name();
     }
 }
