@@ -12,16 +12,24 @@ public class CircleChoice implements IStrategy<RPSChoice> {
 
     @Override
     public String name() {
-        throw new UnsupportedOperationException();
+        return "Circle Choice";
     }
 
     @Override
     public RPSChoice getChoice(IPlayer<RPSChoice> player, List<IGameRound<RPSChoice>> previousRounds) {
-        throw new UnsupportedOperationException();
+        if (player == null || previousRounds == null)
+            throw new NullPointerException("A parameter is null!");
+        int lastRound = previousRounds.size() - 1;
+        if (previousRounds.size() == 0 || previousRounds.get(lastRound).getChoice(player) == RPSChoice.SCISSORS)
+            return RPSChoice.ROCK;
+        else if (previousRounds.get(lastRound).getChoice(player) == RPSChoice.PAPER)
+            return RPSChoice.SCISSORS;
+        else
+            return RPSChoice.PAPER;
     }
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        return name();
     }
 }
