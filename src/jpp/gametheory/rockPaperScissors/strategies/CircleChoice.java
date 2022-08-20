@@ -18,7 +18,7 @@ public class CircleChoice implements IStrategy<RPSChoice> {
     @Override
     public RPSChoice getChoice(IPlayer<RPSChoice> player, List<IGameRound<RPSChoice>> previousRounds) {
         if (player == null || previousRounds == null)
-            throw new NullPointerException("A parameter is null!");
+            throw new NullPointerException("At least a parameter is null!");
         int lastRound = previousRounds.size() - 1;
         if (previousRounds.size() == 0 || previousRounds.get(lastRound).getChoice(player) == RPSChoice.SCISSORS)
             return RPSChoice.ROCK;

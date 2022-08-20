@@ -23,6 +23,8 @@ public class SingleChoice implements IStrategy<RPSChoice> {
 
     @Override
     public RPSChoice getChoice(IPlayer<RPSChoice> player, List<IGameRound<RPSChoice>> previousRounds) {
+        if (player == null || previousRounds == null)
+            throw new NullPointerException("At least a parameter is null!");
     return this.choice;
     }
 
