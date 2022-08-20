@@ -3,13 +3,19 @@ package jpp.gametheory.generic;
 import java.util.*;
 
 public class Game<C extends IChoice> {
-
+    private Set<IPlayer<C>> players;
+    private IReward<C> reward;
     public Game(Set<IPlayer<C>> players, IReward<C> reward) {
-        throw new UnsupportedOperationException();
+       if (players==null|| reward==null)
+           throw new NullPointerException("At least one parameter is null!");
+       if (players.size()<1)
+           throw new IllegalArgumentException("Players contains less than one player!");
+       this.players=players;
+       this.reward=reward;
     }
 
     public Set<IPlayer<C>> getPlayers() {
-        throw new UnsupportedOperationException();
+        return this.players;
     }
 
     public IGameRound<C> playRound() {
