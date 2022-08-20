@@ -1,0 +1,45 @@
+package jpp.gametheory.generic;
+
+import java.util.List;
+
+public class Player<C extends IChoice> implements IPlayer<C> {
+
+    public Player(String name, IStrategy<C> strategy) {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IStrategy<C> getStrategy() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public C getChoice(List<IGameRound<C>> previousRounds) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int compareTo(IPlayer<C> o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int hashCode() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException();
+    }
+}
