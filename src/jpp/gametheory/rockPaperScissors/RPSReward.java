@@ -5,7 +5,6 @@ import jpp.gametheory.generic.IPlayer;
 import jpp.gametheory.generic.IReward;
 
 import java.util.Map;
-import java.util.Set;
 
 public class RPSReward implements IReward<RPSChoice> {
 
@@ -23,23 +22,31 @@ public class RPSReward implements IReward<RPSChoice> {
                 case PAPER -> {
                     if (entry.getValue() == RPSChoice.ROCK) {
                         total += 2;
-                    } else
+                    } else if (entry.getValue() == RPSChoice.PAPER)
+                        continue;
+                    else
                         total -= 1;
                 }
                 case ROCK -> {
                     if (entry.getValue() == RPSChoice.SCISSORS) {
                         total += 2;
-                    } else
+                    } else if (entry.getValue() == RPSChoice.ROCK)
+                        continue;
+                    else
                         total -= 1;
                 }
                 case SCISSORS -> {
                     if (entry.getValue() == RPSChoice.PAPER) {
                         total += 2;
-                    } else
+                    } else if (entry.getValue() == RPSChoice.SCISSORS)
+                        continue;
+                    else
                         total -= 1;
                 }
             }
         }
+        if (total < 0)
+            total = 0;
         return total;
     }
 }
