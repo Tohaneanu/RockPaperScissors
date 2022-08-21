@@ -2,10 +2,8 @@ package jpp.gametheory.generic;
 
 import jpp.gametheory.rockPaperScissors.RPSChoice;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameRound<C extends IChoice> implements IGameRound<C> {
     private Map<IPlayer<C>, C> playerChoices;
@@ -40,8 +38,9 @@ public class GameRound<C extends IChoice> implements IGameRound<C> {
         if (player == null || !playerChoices.containsKey(player))
             throw new NullPointerException("Player cannot be null, or player does not exist in game!");
         Set<IPlayer<C>> players = this.playerChoices.keySet();
-        players.remove(player);
-        return players;
+        Set<IPlayer<C>> result= players.stream().map(pl->new Player(pl.getName(),pl.getStrategy())).collect(Collectors.toSet());
+        result.remove(player);
+        return result;
     }
 
     @Override
@@ -50,8 +49,9 @@ public class GameRound<C extends IChoice> implements IGameRound<C> {
         StringBuilder result=new StringBuilder();
         result.append("(");
         for (Map.Entry<IPlayer<C>, C> entry : sortedMap.entrySet()){
-            result.append(entry.getKey().getName()).append("->").append(entry.getValue().name()).append(", ");
+            result.append(entry.getKey().getName()).append(" -> ").append(entry.getValue().name()).append(", ");
         }
+        result.append(")");
         return result.toString();
     }
 }
