@@ -1,11 +1,13 @@
 package jpp.gametheory.generic;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Game<C extends IChoice> {
     private Set<IPlayer<C>> players;
     private IReward<C> reward;
     private List<IGameRound<C>> playedRounds;
+    private int[] profit;
 
     public Game(Set<IPlayer<C>> players, IReward<C> reward) {
         if (players == null || reward == null)
@@ -15,6 +17,7 @@ public class Game<C extends IChoice> {
         this.players = players;
         this.reward = reward;
         this.playedRounds = new ArrayList<>();
+        this.profit = new int[players.size()];
     }
 
     public Set<IPlayer<C>> getPlayers() {
@@ -40,9 +43,12 @@ public class Game<C extends IChoice> {
     public Optional<IGameRound<C>> undoRound() {
         if (playedRounds.size() == 0)
             return Optional.empty();
-        IGameRound<C> result = playedRounds.get(playedRounds.size() - 1);
-        playedRounds.remove(playedRounds.size() - 1);
-        return Optional.of(result);
+        else {
+            IGameRound<C> last = playedRounds.get(playedRounds.size() - 1);
+            IGameRound<C> result = new GameRound<>(last.getPlayerChoices());
+            playedRounds.remove(playedRounds.size() - 1);
+            return Optional.of(result);
+        }
     }
 
     public void undoNRounds(int n) {
@@ -71,10 +77,44 @@ public class Game<C extends IChoice> {
     }
 
     public Optional<IPlayer<C>> getBestPlayer() {
-        throw new UnsupportedOperationException();
+        int count = 0;
+        for (int i = 0; i < playedRounds.size(); i++) {
+            count = 0;
+            for (IPlayer<C> player : players)
+                profit[count++] += reward.getReward(player, playedRounds.get(i));
+        }
+        int max=-1;
+        int index=0;
+        for (int i=0; i<profit.length;i++){
+            if (profit[i]>max) {
+                max = profit[i];
+                index = i;
+            }
+        }
+        count=0;
+        for (int i:profit){
+            if (i==max)
+                count++;
+        }
+        if(count>1)
+            return Optional.empty();
+        else
+            return Optional.of(players.stream().toList().get(index));
     }
 
     public String toString() {
-        throw new UnsupportedOperationException();
+        StringBuilder result=new StringBuilder("Play after ").append(playedRounds.size()).append(" round:").append("\n").append("Profit : Player");
+        getBestPlayer();
+        List<IPlayer<C>> iPlayers = players.stream().toList();
+        Map<IPlayer<C>,Integer> list=new HashMap<>();
+        for (int i=0;i<players.size();i++){
+            list.put(iPlayers.get(i),profit[i]);
+        }
+        List<Map.Entry<IPlayer<C>, Integer>> sorted =
+                list.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).toList();
+        for (int i=0;i<list.size();i++)
+            result.append("\n").append(sorted.get(i).getValue()).append(" : ").append(sorted.get(i).getKey().getName());
+        return result.toString();
     }
 }

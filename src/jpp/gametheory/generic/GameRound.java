@@ -48,8 +48,13 @@ public class GameRound<C extends IChoice> implements IGameRound<C> {
         SortedMap<IPlayer<C>, C> sortedMap = new TreeMap<>(playerChoices);
         StringBuilder result=new StringBuilder();
         result.append("(");
+        int check=0;
         for (Map.Entry<IPlayer<C>, C> entry : sortedMap.entrySet()){
-            result.append(entry.getKey().getName()).append(" -> ").append(entry.getValue().name()).append(", ");
+            check++;
+            if (check<sortedMap.size())
+                result.append(entry.getKey().getName()).append(" -> ").append(entry.getValue().name()).append(", ");
+            else
+                result.append(entry.getKey().getName()).append(" -> ").append(entry.getValue().name());
         }
         result.append(")");
         return result.toString();
