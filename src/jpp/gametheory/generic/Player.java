@@ -1,17 +1,16 @@
 package jpp.gametheory.generic;
 
-import jpp.gametheory.rockPaperScissors.RPSChoice;
-
+import java.util.Comparator;
 import java.util.List;
 
-public class Player<C extends IChoice> implements IPlayer<C> {
+public class Player<C extends IChoice> implements IPlayer<C>, Comparator<Player<C>> {
     private String name;
     public IStrategy<C> strategy;
 
     public Player(String name, IStrategy<C> strategy) {
-        if(name == null)
+        if (name == null)
             throw new NullPointerException("You must give a name!");
-        if(strategy == null)
+        if (strategy == null)
             throw new NullPointerException("You must give a strategy!");
         this.name = name;
         this.strategy = strategy;
@@ -29,25 +28,30 @@ public class Player<C extends IChoice> implements IPlayer<C> {
 
     @Override
     public C getChoice(List<IGameRound<C>> previousRounds) {
-        if(previousRounds== null)
+        if (previousRounds == null)
             throw new NullPointerException("There are no previous rounds!");
-        return (C) strategy.getChoice(this ,previousRounds);
+        return (C) strategy.getChoice(this, previousRounds);
     }
 
     @Override
     public int compareTo(IPlayer<C> o) {
-        if(o== null)
+        if (o == null)
             throw new NullPointerException("The comparison cannot be made with a null element!");
         return this.name.compareTo(o.getName());
     }
 
     @Override
+    public int compare(Player<C> o1, Player<C> o2) {
+        return Integer.compare(o1.name.hashCode(), o2.name.hashCode());
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if(o== null)
+        if (o == null)
             throw new NullPointerException("The comparison cannot be made with a null element!");
-        if(o==this)
+        if (o == this)
             return true;
-        if(!(o instanceof Player<?> player))
+        if (!(o instanceof Player<?> player))
             return false;
         return this.name.equals(player.getName());
     }
