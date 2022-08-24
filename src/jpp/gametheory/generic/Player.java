@@ -3,7 +3,7 @@ package jpp.gametheory.generic;
 import java.util.Comparator;
 import java.util.List;
 
-public class Player<C extends IChoice> implements IPlayer<C>, Comparator<Player<C>> {
+public class Player<C extends IChoice> implements IPlayer<C> {
     private String name;
     public IStrategy<C> strategy;
 
@@ -38,11 +38,6 @@ public class Player<C extends IChoice> implements IPlayer<C>, Comparator<Player<
         if (o == null)
             throw new NullPointerException("The comparison cannot be made with a null element!");
         return this.name.compareTo(o.getName());
-    }
-
-    @Override
-    public int compare(Player<C> o1, Player<C> o2) {
-        return Integer.compare(o1.name.hashCode(), o2.name.hashCode());
     }
 
     @Override
