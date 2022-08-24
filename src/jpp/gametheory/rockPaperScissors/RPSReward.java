@@ -45,8 +45,6 @@ public class RPSReward implements IReward<RPSChoice> {
                 }
             }
         }
-        if (total < 0)
-            total = 0;
         return total;
     }
 }
