@@ -1,6 +1,7 @@
 package jpp.gametheory.generic;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Game<C extends IChoice> {
@@ -99,7 +100,7 @@ public class Game<C extends IChoice> {
         if(count>1)
             return Optional.empty();
         else
-            return Optional.of(players.stream().toList().get(index+1));
+            return Optional.of(players.stream().toList().get(index));
     }
 
     public String toString() {
@@ -112,7 +113,8 @@ public class Game<C extends IChoice> {
         }
         List<Map.Entry<IPlayer<C>, Integer>> sorted =
                 list.entrySet().stream()
-                        .sorted((Comparator<? super Map.Entry<IPlayer<C>, Integer>>) Map.Entry.comparingByValue().reversed().thenComparing(s->s.getKey().hashCode())).toList();
+                        .sorted(Comparator.<Map.Entry<IPlayer<C>, Integer>>comparingInt(Map.Entry::getValue)
+                                .reversed().thenComparing(Map.Entry::getKey)).collect(Collectors.toList());
         for (int i=0;i<list.size();i++)
             result.append("\n").append(sorted.get(i).getValue()).append(" : ").append(sorted.get(i).getKey().getName()).append("(").append(sorted.get(i).getKey().getStrategy().name()).append(")");
         return result.toString();
